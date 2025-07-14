@@ -14,7 +14,13 @@ function App() {
 
       <Tip tip="Linguagem de programação dinâmica" />
 
-      <Letter value="R" />
+      <div className={styles.word}>
+        <Letter value="R" />
+        <Letter value="R" />
+        <Letter value="R" />
+        <Letter value="R" />
+        <Letter value="R" />
+      </div>
     </div>
   );
 }
