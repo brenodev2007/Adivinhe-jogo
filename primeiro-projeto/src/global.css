@@ -24,6 +24,9 @@ button {
   cursor: pointer;
 
   transition: filter 0.2s;
+
+  font-family: "Noto Sans", sans-serif;
+  font-optical-sizing: auto;
 }
 
 button:hover {

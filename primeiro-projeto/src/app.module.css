@@ -26,3 +26,8 @@
   gap: 1rem;
   margin: 2.5rem 0;
 }
+
+.gap {
+  display: flex;
+  gap: 0.75rem;
+}
