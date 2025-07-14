@@ -10,7 +10,7 @@
 }
 
 .container > header {
-  width: 30%;
+  width: 100%;
   display: flex;
   justify-content: space-between;
   padding: 3.25rem 0;
