@@ -1,4 +1,5 @@
 import { Header } from "./components/Header";
+import { Tip } from "./components/Tip";
 import styles from "./app.module.css";
 
 function App() {
@@ -9,6 +10,8 @@ function App() {
   return (
     <div className={styles.container}>
       <Header current={5} max={10} onRestart={handleRestartGame} />
+
+      <Tip tip="Linguagem de programação dinâmica" />
     </div>
   );
 }
