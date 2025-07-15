@@ -18,13 +18,11 @@ function App() {
   const ATTEMP_MARGIN = 5;
 
   function handleRestartGame() {
-    if (!challenge) {
-      return;
-    }
-    const isConfirmed = window.confirm(
-      "Você tem certeza, que deseja reiniciar"
-    );
+    if (!challenge) return;
 
+    const isConfirmed = window.confirm(
+      "Você tem certeza que deseja reiniciar?"
+    );
     if (isConfirmed) {
       startGame();
     }
@@ -40,19 +38,16 @@ function App() {
   }
 
   function handleConfirm() {
-    if (!challenge) {
-      return;
+    if (!challenge) return;
+
+    const value = letter.toUpperCase().trim();
+    if (!value || value.length !== 1 || !/[A-Z]/.test(value)) {
+      return alert("Digite uma letra válida (A-Z).");
     }
 
-    if (!letter.trim()) {
-      return alert("Digite uma letra");
-    }
-
-    const value = letter.toUpperCase();
     const exists = lettersUsed.find((used) => used.value === value);
-
     if (exists) {
-      return alert("Você já utilizou a letra" + value);
+      return alert("Você já utilizou a letra " + value);
     }
 
     const hits = challenge.word
@@ -78,21 +73,15 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (!challenge) {
-      return;
+    if (!challenge) return;
+
+    const attempLimit = challenge.word.length + ATTEMP_MARGIN;
+
+    if (score === challenge.word.length) {
+      endGame("🎉 Parabéns, você ganhou!");
+    } else if (lettersUsed.length >= attempLimit) {
+      endGame("😞 Que pena, você perdeu!");
     }
-
-    setTimeout(() => {
-      if (score === challenge.word.length) {
-        return endGame("Parabéns, você ganhou o jogo!");
-      }
-
-      const attempLimit = challenge.word.length + ATTEMP_MARGIN;
-
-      if (lettersUsed.length === attempLimit) {
-        return endGame("Que pena, você perdeu");
-      }
-    }, 200);
   });
 
   if (!challenge) {
@@ -111,16 +100,14 @@ function App() {
         <Tip tip={challenge.tip} />
 
         <div className={styles.word}>
-          {challenge.word.split("").map(() => {
-            const letterUsed = lettersUsed.find(
-              (used) => used.value.toUpperCase() === letter.toUpperCase()
+          {challenge.word.split("").map((char, index) => {
+            const found = lettersUsed.find(
+              (used) =>
+                used.value.toUpperCase() === char.toUpperCase() && used.correct
             );
 
             return (
-              <Letter
-                value={letterUsed?.value}
-                color={letterUsed?.correct ? "correct" : "default"}
-              />
+              <Letter key={index} value={found ? char.toUpperCase() : ""} />
             );
           })}
         </div>
