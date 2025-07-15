@@ -12,7 +12,8 @@ import { WORDS } from "./utils/words";
 import type { Challenge } from "./utils/words";
 
 function App() {
-  const [attemps, setScore] = useState(0);
+  const [score, setScore] = useState(0);
+  const [attemps, setAttemps] = useState(0);
   const [letter, setLetter] = useState("");
   const [lettersUsed, setLetterUsed] = useState<LettersUsedProps[]>([]);
   const [challenge, setChallenge] = useState<Challenge | null>(null);
@@ -26,8 +27,37 @@ function App() {
     const word = WORDS[index];
     setChallenge(word);
     setLetter("");
-    setScore(0);
+    setAttemps(0);
     setLetterUsed([]);
+  }
+
+  function handleConfirm() {
+    if (!challenge) {
+      return;
+    }
+
+    if (!letter.trim()) {
+      return alert("Digite uma letra");
+    }
+
+    const value = letter.toUpperCase();
+    const exists = lettersUsed.find((used) => used.value === value);
+
+    if (exists) {
+      return alert("Você já utilizou a letra" + value);
+    }
+
+    const hits = challenge.word
+      .toUpperCase()
+      .split("")
+      .filter((char) => char === value).length;
+
+    const correct = hits > 0;
+    const currentScore = score + hits;
+
+    setLetterUsed((prevState) => [...prevState, { value, correct }]);
+    setScore(currentScore);
+    setLetter("");
   }
 
   useEffect(() => {
@@ -43,7 +73,7 @@ function App() {
       <main>
         <Header current={attemps} max={10} onRestart={handleRestartGame} />
 
-        <Tip tip="Linguagem de programação dinâmica" />
+        <Tip tip={challenge.tip} />
 
         <div className={styles.word}>
           {challenge.word.split("").map((_, index) => (
@@ -54,8 +84,14 @@ function App() {
         <h4>Palpite</h4>
 
         <div className={styles.gap}>
-          <Input autoFocus maxLength={1} placeholder="?" />
-          <Button title="Confirmar" />
+          <Input
+            autoFocus
+            maxLength={1}
+            placeholder="?"
+            value={letter}
+            onChange={(e) => setLetter(e.target.value)}
+          />
+          <Button title="Confirmar" onClick={handleConfirm} />
         </div>
 
         <LettersUsed data={lettersUsed} />
