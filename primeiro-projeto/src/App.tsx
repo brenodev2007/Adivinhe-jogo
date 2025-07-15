@@ -59,9 +59,32 @@ function App() {
     setLetter("");
   }
 
+  function endGame(message: string) {
+    alert(message);
+    startGame();
+  }
+
   useEffect(() => {
     startGame();
   }, []);
+
+  useEffect(() => {
+    if (!challenge) {
+      return;
+    }
+
+    setTimeout(() => {
+      if (score === challenge.word.length) {
+        return endGame("Parabéns, você ganhou o jogo!");
+      }
+
+      const attempLimit = challenge.word.length + ATTEMP_MARGIN;
+
+      if (lettersUsed.length === attempLimit) {
+        return endGame("Que pena, você perdeu");
+      }
+    }, 200);
+  });
 
   if (!challenge) {
     return <div>Carregando...</div>;
