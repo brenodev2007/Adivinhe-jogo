@@ -18,7 +18,16 @@ function App() {
   const ATTEMP_MARGIN = 5;
 
   function handleRestartGame() {
-    alert("Reiniciar o Jogo!");
+    if (!challenge) {
+      return;
+    }
+    const isConfirmed = window.confirm(
+      "Você tem certeza, que deseja reiniciar"
+    );
+
+    if (isConfirmed) {
+      startGame();
+    }
   }
 
   function startGame() {
